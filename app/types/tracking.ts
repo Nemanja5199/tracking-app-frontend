@@ -1,4 +1,7 @@
+import { UUID } from "crypto";
+
 export interface TrackingItem {
+    id: UUID,
     status: string;
     poNumber: string | null;
     etd: string | null;

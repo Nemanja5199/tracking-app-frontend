@@ -4,7 +4,6 @@ import { TrackingTableRow } from '../components/TrackingTableRow';
 import { PaginationControls } from '../components/PaginationControles';
 import { PageSizeSelector } from '../components/PageSizeSelector';
 
-
 const OverviewPage = async ({
   searchParams,
 }: {
@@ -31,9 +30,9 @@ const OverviewPage = async ({
             </tr>
           </thead>
           <tbody>
-            {data.content.map((item, index) => (
+            {data.content.map((item) => (
               <TrackingTableRow 
-                key={`${item.houseAwb}-${item.eta}-${index}`} 
+                key={item.id} 
                 item={item} 
               />
             ))}

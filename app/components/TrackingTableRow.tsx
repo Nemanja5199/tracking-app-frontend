@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { TrackingItem } from '../types/tracking';
 
 interface Props {
@@ -11,7 +11,10 @@ interface Props {
 
 export const TrackingTableRow = ({ item }: Props) => {
   const router = useRouter();
-
+  const searchParams = useSearchParams();
+  const currentPage = searchParams.get('page') || '0';
+  const currentPerPage = searchParams.get('perpage') || '5';
+  
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
@@ -22,10 +25,19 @@ export const TrackingTableRow = ({ item }: Props) => {
     });
   };
 
+
+  const handleClick = () => {
+   
+    const currentPage = searchParams.get('page') || '0';
+    const currentPerPage = searchParams.get('perpage') || '5';
+    const detailsUrl = `/tracking/${item.id}?returnPage=${currentPage}&returnPerPage=${currentPerPage}`;
+    router.push(detailsUrl);
+  };
+
   return (
     <tr 
       className="hover cursor-pointer"
-      onClick={() => router.push(`/tracking/${item.houseAwb}`)}
+      onClick={handleClick}
     >
       <td>
         <div className={`badge ${
