@@ -1,15 +1,11 @@
 import { PaginatedResponse, TrackingItem } from '../types/tracking';
+import config from '../../config';
 
-const getBaseUrl = () => {
-    return process.env.NODE_ENV === 'production'
-        ? 'http://backend:8080'
-        : 'http://localhost:8080';
-};
+
 
 export async function getTrackingData(page: number = 0, perPage: number = 5): Promise<PaginatedResponse> {
-    const url = `${getBaseUrl()}/api/tracking?page=${page}&perpage=${perPage}`;
-    console.log('Fetching:', url); // Debug log
-
+    const url = `${config.apiUrl}/api/tracking?page=${page}&perpage=${perPage}`;
+  
     const response = await fetch(url, {
         cache: 'no-store',
     });
@@ -23,7 +19,7 @@ export async function getTrackingData(page: number = 0, perPage: number = 5): Pr
 
 export async function getTrackingItem(id: string): Promise<TrackingItem | null> {
     const response = await fetch(
-        `${getBaseUrl()}/api/tracking/item?id=${id}`, 
+        `${config.apiUrl}/api/tracking/item?id=${id}`, 
         {
             cache: 'no-store',
         }
@@ -46,21 +42,14 @@ export async function uploadTrackingFile(file: File, provider: string): Promise<
     formData.append('file', file);
     formData.append('provider', provider);
 
-    const url = `${getBaseUrl()}/api/tracking/upload`;
-    console.log('Attempting upload to:', url);
-
     try {
-        const response = await fetch(url, {
+        const response = await fetch(`${config.apiUrl}/api/tracking/upload`, {
             method: 'POST',
             body: formData,
         });
 
-        console.log('Response status:', response.status);
-
         if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Upload failed:', errorText);
-            throw new Error(errorText || 'Upload failed');
+            throw new Error('Upload failed');
         }
 
         return {
@@ -68,7 +57,6 @@ export async function uploadTrackingFile(file: File, provider: string): Promise<
             message: 'File uploaded successfully'
         };
     } catch (error) {
-        console.error('Upload error:', error);
         return {
             success: false,
             message: error instanceof Error ? error.message : 'Upload failed'
