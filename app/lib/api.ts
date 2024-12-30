@@ -1,7 +1,7 @@
 import { PaginatedResponse, TrackingItem } from '../types/tracking';
 
 export async function getTrackingData(page: number = 0, perPage: number = 5): Promise<PaginatedResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
     const url = `${baseUrl}/api/tracking?page=${page}&perpage=${perPage}`;
     console.log('Fetching:', url); // Debug log
 
@@ -20,7 +20,7 @@ export async function getTrackingData(page: number = 0, perPage: number = 5): Pr
 export async function getTrackingItem(id: string): Promise<TrackingItem| null>{
 
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
 
     const response = await fetch(
         `${baseUrl}/api/tracking/item?id=${id}`, 
@@ -44,7 +44,7 @@ interface UploadResponse {
 
 
   export async function uploadTrackingFile(file: File, provider: string): Promise<UploadResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://backend:8080';
     
     const formData = new FormData();
     formData.append('file', file);
