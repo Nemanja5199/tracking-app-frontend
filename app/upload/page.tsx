@@ -68,7 +68,7 @@ const UploadPage = () => {
       const result = await uploadTrackingFile(file, selectedProvider);
 
       if (result.success) {
-        router.push('/overview');
+        router.replace('/overview');
       } else {
         setError(result.message || 'Upload failed');
       }
@@ -85,7 +85,7 @@ const UploadPage = () => {
 
       <div className="card bg-base-100 shadow-xl max-w-2xl mx-auto">
         <div className="card-body">
-          {/* Provider Selection */}
+       
           <div className="form-control w-full mb-6">
             <label className="label">
               <span className="label-text">Select Provider</span>
