@@ -46,14 +46,20 @@ export async function uploadTrackingFile(file: File, provider: string): Promise<
     formData.append('file', file);
     formData.append('provider', provider);
 
+    const url = `${getBaseUrl()}/api/tracking/upload`;
+    console.log('Attempting upload to:', url);
+
     try {
-        const response = await fetch(`${getBaseUrl()}/api/tracking/upload`, {
+        const response = await fetch(url, {
             method: 'POST',
             body: formData,
         });
 
+        console.log('Response status:', response.status);
+
         if (!response.ok) {
             const errorText = await response.text();
+            console.error('Upload failed:', errorText);
             throw new Error(errorText || 'Upload failed');
         }
 
