@@ -34,7 +34,7 @@ export async function getTrackingItem(id: string): Promise<TrackingItem | null> 
 
 interface UploadResponse {
     success: boolean;
-    message?: string;
+    message: string;
 }
 
 export async function uploadTrackingFile(file: File, provider: string): Promise<UploadResponse> {
@@ -49,12 +49,15 @@ export async function uploadTrackingFile(file: File, provider: string): Promise<
         });
 
         if (!response.ok) {
-            throw new Error('Upload failed');
+            const errorData = await response.json().catch(() => null);
+            throw new Error(errorData?.message || 'Upload failed');
         }
+
+        const data = await response.json();
 
         return {
             success: true,
-            message: 'File uploaded successfully'
+            message: data.message || 'File uploaded successfully'
         };
     } catch (error) {
         return {

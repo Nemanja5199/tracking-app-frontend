@@ -51,33 +51,29 @@ const UploadPage = () => {
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      setError('Please select a file');
-      return;
-    }
-    
-    if (!selectedProvider) {
-      setError('Please select a provider');
-      return;
+    if (!file || !selectedProvider) {
+        setError('Please select both a file and a provider');
+        return;
     }
 
     try {
-      setUploading(true);
-      setError(null);
+        setUploading(true);
+        setError(null);
 
-      const result = await uploadTrackingFile(file, selectedProvider);
+        const result = await uploadTrackingFile(file, selectedProvider);
 
-      if (result.success) {
-        router.replace('/overview');
-      } else {
-        setError(result.message || 'Upload failed');
-      }
+        if (result.success) {
+        
+            window.location.href = '/overview';
+        } else {
+            setError(result.message);
+        }
     } catch (err) {
-      setError('Upload failed');
+        setError('Upload failed');
     } finally {
-      setUploading(false);
+        setUploading(false);
     }
-  };
+};
 
   return (
     <div className="p-4 md:p-6">
